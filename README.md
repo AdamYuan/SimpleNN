@@ -1,5 +1,5 @@
 # SimpleNN
-A simple neuron network implemented with pure c++, trained with ADAM optimizer, test with MNIST dataset (98.31% accuracy)
+A simple neural network implemented with pure c++, trained with ADAM optimizer, test with MNIST dataset (98.31% accuracy)
 
 ## Compile
 ```sh
