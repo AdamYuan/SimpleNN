@@ -1,5 +1,5 @@
 # SimpleNN
-A simple neuron network implemented with pure c++, trained with ADAM optimizer, test with MNIST dataset (98.13% accuracy)
+A simple neuron network implemented with pure c++, trained with ADAM optimizer, test with MNIST dataset (98.31% accuracy)
 
 ## Compile
 ```sh
@@ -9,4 +9,39 @@ make
 ./MnistUI bests/784-200-200-10_width_98_31.nn #a ui to recognize handwritten digit (written with SFML)
 ```
 
-## Usage
+## MnistUI
+### Usage
+drag to write a digit, press SPACE to recognize digit with neural network, and the result will be output in console
+## Screenshots
+![](https://raw.githubusercontent.com/AdamYuan/SimpleNN/master/screenshots/1.png)
+```
+               .?????????.. 
+             .??@@@@@@@@@?. 
+            ?@@@@?....?@@?. 
+           .?@??.     .?@??.
+           .?@?.       ?@??.
+           .?@?..     .?@??.
+            .@@??....??@@?. 
+            .?@@@????@@@?.  
+            ..?@@@@@@??.    
+        ...???@@@@@@@?.     
+      .??@@@@@@@???@@@?.    
+    .??@@??....   ..?@@?.   
+   .?@@??..         .?@@?.  
+  .?@@?.             .?@@?  
+ .?@@?.               .?@?. 
+ .@@?.                 ?@??.
+ ?@?.                  ?@??.
+ ?@?.                  ?@?. 
+ .@@?.                .?@?. 
+ .@@?.               .?@@.  
+ .??@?.             .??@?.  
+  .?@@?.            .@@?.   
+   .??@@?.        .?@@?.    
+    ..?@@??..   ..?@@?.     
+      ..@@@@?????@@@?.      
+        ..??@@@@@??..       
+          ..?????..         
+recognize: 3
+nn output: 0.000000 0.000000 0.000000 0.629701 0.000000 0.000000 0.000000 0.000000 0.279446 0.000000 
+```

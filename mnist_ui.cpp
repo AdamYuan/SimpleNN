@@ -25,9 +25,12 @@ void init_window()
 void paint()
 {
 	sf::Vector2i xy = sf::Mouse::getPosition(window);
-	int x = std::max(0, std::min(xy.x, kSize)) - kBrushRadius, y = kSize - std::max(0, std::min(xy.y, kSize)) - kBrushRadius;
-	brush.setPosition(x, y);
-	render_tex.draw(brush);
+	if(xy.x >= 0 && xy.y < kSize && xy.y >= 0 && xy.y < kSize)
+	{
+		int x = std::max(0, std::min(xy.x, kSize)) - kBrushRadius, y = kSize - std::max(0, std::min(xy.y, kSize)) - kBrushRadius;
+		brush.setPosition(x, y);
+		render_tex.draw(brush);
+	}
 }
 void clear()
 {
@@ -75,6 +78,7 @@ int main(int argc, char **argv)
 	init_window();
 	clear();
 
+	bool mouse_down = false;
 	while(window.isOpen())
 	{
 		while(window.pollEvent(event))
@@ -87,8 +91,12 @@ int main(int argc, char **argv)
 				recognize();
 				clear();
 			}
+			if(event.type == sf::Event::EventType::MouseButtonPressed)
+				mouse_down = true;
+			if(event.type == sf::Event::EventType::MouseButtonReleased)
+				mouse_down = false;
 		}
-		if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		if(mouse_down)
 			paint();
 
 		window.draw(sf::Sprite(render_tex.getTexture()));
