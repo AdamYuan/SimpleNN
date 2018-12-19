@@ -1,12 +1,13 @@
 #include <iostream>
 #include <algorithm>
 #include "NN/NN.hpp"
+#include "MNIST/Util.hpp"
 
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
 constexpr int kGridSize = 14, kSize = 28*kGridSize;
-constexpr float kBrushRadius = 16.0f;
+constexpr float kBrushRadius = 10.0f;
 sf::RenderWindow window;
 sf::RenderTexture render_tex;
 sf::Event event;
@@ -46,6 +47,12 @@ void recognize()
 			for(unsigned x = px; x < px + (kGridSize << 2); x += 4)
 				v += float(ptr[y * (kSize << 2) + x] == 0);
 		nn_input[i] = v / float(kGridSize * kGridSize);
+	}
+	width_normalize(&nn_input);
+	for(unsigned i = 0; i < 784; ++i)
+	{
+		putchar(nn_input[i] >= 0.25 ? (nn_input[i] >= 0.5 ? (nn_input[i] >= 0.75 ? '@' : '?') : '.') : ' ');
+		if(i % 28 == 27) putchar('\n');
 	}
 	snn.Evaluate(nn_input);
 	unsigned res = std::max_element(snn.GetOutput(), snn.GetOutput() + 10) - snn.GetOutput();

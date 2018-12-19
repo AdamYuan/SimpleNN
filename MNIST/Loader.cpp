@@ -1,4 +1,5 @@
 #include "Loader.hpp"
+#include "Util.hpp"
 #include <fstream>
 
 static inline int byte_to_int32(unsigned char *byte4)
@@ -43,6 +44,7 @@ void MnistLoader::Load(const char *file1, const char *file2)
 			int l = images[i*imgsz + j];
 			m_data_set[i].m_inputs[j] = float(l) / 255.0f;
 		}
+		width_normalize(&m_data_set[i].m_inputs);
 		m_data_set[i].m_expected[int(labels[i])] = 1.0;
 	}
 	printf("MNIST data loaded from %s and %s\n", file1, file2);

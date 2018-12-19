@@ -1,5 +1,5 @@
-#ifndef UTIL_HPP
-#define UTIL_HPP
+#ifndef NN_UTIL_HPP
+#define NN_UTIL_HPP
 
 #include <cmath>
 
