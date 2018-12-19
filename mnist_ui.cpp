@@ -7,36 +7,49 @@
 #include <SFML/Graphics.hpp>
 
 constexpr int kGridSize = 14, kSize = 28*kGridSize;
-constexpr float kBrushRadius = 10.0f;
+constexpr float kMinRadius = 8.0, kMaxRadius = 24.0, kRadiusStep = 1.0;
 sf::RenderWindow window;
 sf::RenderTexture render_tex;
 sf::Event event;
-sf::CircleShape brush;
+float radius{10.0f};
+sf::CircleShape brush, cursor;
 SimpleNN snn;
 
-void init_window()
+void InitWindow()
 {
 	window.create(sf::VideoMode(kSize, kSize), "Mnist Demo", sf::Style::Titlebar | sf::Style::Close);
 	render_tex.create(kSize, kSize);
 
 	brush.setFillColor(sf::Color(0, 0, 0));
-	brush.setRadius(kBrushRadius);
+	cursor.setFillColor(sf::Color(0, 0, 0, 100));
+	brush.setRadius(radius);
+	cursor.setRadius(radius);
 }
-void paint()
+void Paint()
 {
 	sf::Vector2i xy = sf::Mouse::getPosition(window);
 	if(xy.x >= 0 && xy.y < kSize && xy.y >= 0 && xy.y < kSize)
 	{
-		int x = std::max(0, std::min(xy.x, kSize)) - kBrushRadius, y = kSize - std::max(0, std::min(xy.y, kSize)) - kBrushRadius;
+		int x = std::max(0, std::min(xy.x, kSize)) - radius, y = kSize - std::max(0, std::min(xy.y, kSize)) - radius;
 		brush.setPosition(x, y);
 		render_tex.draw(brush);
 	}
 }
-void clear()
+void Clear()
 {
 	render_tex.clear(sf::Color(255, 255, 255));
 }
-void recognize()
+void Cursor()
+{
+	sf::Vector2i xy = sf::Mouse::getPosition(window);
+	if(xy.x >= 0 && xy.y < kSize && xy.y >= 0 && xy.y < kSize)
+	{
+		int x = std::max(0, std::min(xy.x, kSize)) - radius, y = std::max(0, std::min(xy.y, kSize)) - radius;
+		cursor.setPosition(x, y);
+		window.draw(cursor);
+	}
+}
+void Recognize()
 {
 	sf::Image img{render_tex.getTexture().copyToImage()};
 	const sf::Uint8 *ptr = img.getPixelsPtr();
@@ -75,8 +88,8 @@ int main(int argc, char **argv)
 
 	snn.Load(argv[1]);
 
-	init_window();
-	clear();
+	InitWindow();
+	Clear();
 
 	bool mouse_down = false;
 	while(window.isOpen())
@@ -88,18 +101,26 @@ int main(int argc, char **argv)
 			if(event.type == sf::Event::EventType::KeyReleased 
 					&& event.key.code == sf::Keyboard::Space)
 			{
-				recognize();
-				clear();
+				Recognize();
+				Clear();
 			}
 			if(event.type == sf::Event::EventType::MouseButtonPressed)
 				mouse_down = true;
 			if(event.type == sf::Event::EventType::MouseButtonReleased)
 				mouse_down = false;
+			if(event.type == sf::Event::EventType::MouseWheelScrolled)
+			{
+				radius += kRadiusStep * (event.mouseWheel.x > 0 ? -1 : 1);
+				radius = std::min(std::max(kMinRadius, radius), kMaxRadius);
+				brush.setRadius(radius);
+				cursor.setRadius(radius);
+			}
 		}
 		if(mouse_down)
-			paint();
+			Paint();
 
 		window.draw(sf::Sprite(render_tex.getTexture()));
+		Cursor();
 		window.display();
 	}
 
