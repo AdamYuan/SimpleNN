@@ -12,13 +12,13 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 	MnistLoader training_set{"MNIST/train-images.idx3-ubyte", "MNIST/train-labels.idx1-ubyte"};
-	SimpleNN snn({784, 800, 10});
+	SimpleNN snn{"./bests/784-800-10_98_45.nn"};
 	//SimpleNN snn({784, 200, 200, 10});
-	snn.UniformRandomizeWeights(0.0, 0.00001);
+	//snn.UniformRandomizeWeights(0.0, 0.00001);
 	//snn.HeRandomizeWeights();
 	Trainer{snn, 
 		0.0001,      //learning rate
-		12000,    //20 epoches
+		4800,    //20 epoches
 		100,     //batch size
 	}.Run(training_set.GetDataSet());
 

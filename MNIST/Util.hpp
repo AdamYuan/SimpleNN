@@ -9,6 +9,21 @@
 //0 0 1 0    0 0 0 1
 //something like that ...
 inline float lerp(float a, float b, float f) { return a+(b-a)*f; } 
+inline float sample(const std::vector<float> &img, float x, float y) //x, y in [0, 28)
+{
+	unsigned ix = x, iy = y, ix1 = ix + 1, iy1 = iy + 1;
+	float fx = x - ix, fy = y - iy;
+	bool vx = 0 <= ix && ix < 28u;
+	bool vy = 0 <= iy && iy < 28u;
+	bool vx1 = 0 <= ix1 && ix1 < 28u;
+	bool vy1 = 0 <= iy1 && iy1 < 28u;
+	float s0 = vx && vy ? img[iy*28 + ix] : 0.0;
+	float s1 = vx1 && vy ? img[iy*28 + ix1] : 0.0;
+	float s2 = vx && vy1 ? img[iy1*28 + ix] : 0.0;
+	float s3 = vx1 && vy1 ? img[iy1*28 + ix1] : 0.0;
+
+	return lerp( lerp(s0, s1, fx), lerp(s2, s3, fx), fy );
+}
 inline void width_normalize(std::vector<float> *img)
 {
 	unsigned min_x = 28, min_y = 28, max_x = 0, max_y = 0;
@@ -22,6 +37,7 @@ inline void width_normalize(std::vector<float> *img)
 			max_y = std::max(max_y, y);
 		}
 	if(min_x > max_x || min_y > max_y) return;
+
 	std::vector<float> out(784);
 	unsigned sub_x = max_x - min_x + 1, sub_y = max_y - min_y + 1;
 	float x_mul = float(sub_x) / 28.0;
@@ -29,19 +45,8 @@ inline void width_normalize(std::vector<float> *img)
 	for(unsigned i = 0; i < 784; ++i)
 	{
 		unsigned x = i % 28, y = i / 28;
-		float tx = x * x_mul, ty = y * y_mul;
-		unsigned ux = tx, uy = ty;
-		ux = std::min(ux, sub_x - 1);
-		uy = std::min(uy, sub_y - 1);
-		unsigned rx = min_x + ux, ry = min_y + uy;
-		unsigned rx1 = std::min(rx + 1, 27u);
-		unsigned ry1 = std::min(ry + 1, 27u);
-		float s0 = (*img)[ry*28 + rx];
-		float s1 = (*img)[ry*28 + rx1];
-		float s2 = (*img)[ry1*28 + rx];
-		float s3 = (*img)[ry1*28 + rx1];
-
-		out[i] = lerp( lerp(s0, s1, tx - ux), lerp(s2, s3, tx - ux), ty - uy );
+		float tx = x * x_mul + min_x, ty = y * y_mul + min_y;
+		out[i] = sample(*img, tx, ty);
 	}
 	*img = out;
 }
