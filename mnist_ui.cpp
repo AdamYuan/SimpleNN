@@ -88,6 +88,7 @@ unsigned Recognize()
 	for(unsigned i = 0; i < 784; ++i)
 	{
 		unsigned gx = i % 28, gy = i / 28, c = 255 * nn_input[i];
+		c = std::min(c, 255u);
 		input_rect.setPosition(gx * kGridSize, gy * kGridSize);
 		input_rect.setFillColor(sf::Color(c, c, c, 255));
 		input_tex.draw(input_rect);
@@ -100,6 +101,7 @@ unsigned Recognize()
 	for(unsigned i = 0; i < 10; ++i)
 	{
 		unsigned c = 255 * snn.GetOutput()[i];
+		c = std::min(c, 255u);
 		output_rect.setPosition(0, i * kOutSize);
 		output_rect.setFillColor(sf::Color(c, c, c, 255));
 		output_tex.draw(output_rect);
