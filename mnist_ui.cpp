@@ -11,7 +11,7 @@ constexpr float kMinRadius = 8.0, kMaxRadius = 30.0, kRadiusStep = 1.0;
 sf::RenderWindow window;
 sf::RenderTexture paint_tex, input_tex, output_tex, output_digits_tex;
 sf::Event event;
-float radius{10.0f};
+float radius{(kMinRadius + kMaxRadius) * 0.5f};
 sf::CircleShape brush_circle, cursor_circle;
 sf::RectangleShape input_rect, output_rect;
 SimpleNN snn;
