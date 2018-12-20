@@ -15,6 +15,4 @@ make
 **SCROLL** to change brush radius  
 **PRESS SPACE** to recognize digit with neural network
 ## Screenshots
-![](https://raw.githubusercontent.com/AdamYuan/SimpleNN/master/screenshots/1.png)
-![](https://raw.githubusercontent.com/AdamYuan/SimpleNN/master/screenshots/2.png)
-![](https://raw.githubusercontent.com/AdamYuan/SimpleNN/master/screenshots/3.png)
+![](https://raw.githubusercontent.com/AdamYuan/SimpleNN/master/screenshots.png)
