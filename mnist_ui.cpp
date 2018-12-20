@@ -47,7 +47,7 @@ void InitWindow()
 void Paint()
 {
 	sf::Vector2i xy = sf::Mouse::getPosition(window);
-	if(xy.x >= 0 && xy.y < kSize && xy.y >= 0 && xy.y < kSize)
+	if(xy.x >= 0 && xy.x < kSize && xy.y >= 0 && xy.y < kSize)
 	{
 		int x = std::max(0, std::min(xy.x, kSize)) - radius, y = std::max(0, std::min(xy.y, kSize)) - radius;
 		brush_circle.setPosition(x, y);
@@ -62,7 +62,7 @@ void Clear()
 void Cursor()
 {
 	sf::Vector2i xy = sf::Mouse::getPosition(window);
-	if(xy.x >= 0 && xy.y < kSize && xy.y >= 0 && xy.y < kSize)
+	if(xy.x >= 0 && xy.x < kSize && xy.y >= 0 && xy.y < kSize)
 	{
 		int x = std::max(0, std::min(xy.x, kSize)) - radius, y = std::max(0, std::min(xy.y, kSize)) - radius;
 		cursor_circle.setPosition(x, y);
