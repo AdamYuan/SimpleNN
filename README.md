@@ -14,5 +14,5 @@ make
 **DRAG** to write a digit  
 **SCROLL** to change brush radius  
 **PRESS SPACE** to recognize digit with neural network
-## Screenshots
+### Screenshots
 ![](https://raw.githubusercontent.com/AdamYuan/SimpleNN/master/screenshots.gif)
